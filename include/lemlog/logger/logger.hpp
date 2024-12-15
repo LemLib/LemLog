@@ -9,7 +9,6 @@ enum class Level {
     INFO,
     WARN,
     ERROR,
-    FATAL,
 };
 
 /**
