@@ -1,4 +1,4 @@
-#include "lemlog/logger.hpp"
+#include "lemlog/logger/logger.hpp"
 #include <list>
 
 namespace logger {
