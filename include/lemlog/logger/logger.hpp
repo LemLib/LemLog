@@ -4,6 +4,46 @@
 
 namespace logger {
 
+/**
+ * @brief add a topic to the whitelist
+ *
+ * Debug messages need their topic on the whitelist in order to be sent to the
+ * sinks
+ *
+ * @param s the topic to add
+ *
+ * @b Example:
+ * @code {.cpp}
+ * void initialize() {
+ *   logger::addWhitelist("lemlib/motions/boomerang");
+ *   logger::addWhitelist("lemlib/motions/follow");
+ * }
+ * @endcode
+ */
+void addWhitelist(std::string s);
+
+/**
+ * @brief add a topic to the blacklist
+ *
+ * Messages with a level other than debug will be sent to the sinks unless the
+ * topic is on the blacklist
+ *
+ * @param s the topic to add
+ *
+ * @b Example:
+ * @code {.cpp}
+ * void initialize() {
+ *   logger::addWhitelist("lemlib/motions/boomerang");
+ *   logger::addWhitelist("lemlib/motions/follow");
+ * }
+ * @endcode
+ */
+void addBlacklist(std::string s);
+
+/**
+ * @brief Level enum class
+ *
+ */
 enum class Level {
     DEBUG,
     INFO,
