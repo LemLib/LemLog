@@ -1,0 +1,12 @@
+[
+  {
+    "metadata": {
+      "location": "https://github.com/LemLib/LemLog/releases/download/v0.1.0/LemLog%400.1.0.zip"
+    },
+    "name": "LemLog",
+    "py/object": "pros.conductor.templates.base_template.BaseTemplate",
+    "supported_kernels": "^4.1.1",
+    "target": "v5",
+    "version": "0.1.0"
+  }
+]
