@@ -23,6 +23,24 @@ namespace logger {
 void addWhitelist(std::string s);
 
 /**
+ * @brief remove a topic from the whitelist
+ *
+ * Debug messages need their topic on the whitelist in order to be sent to the
+ * sinks
+ *
+ * @param s the topic to remove
+ *
+ * @b Example:
+ * @code {.cpp}
+ * void initialize() {
+ *   logger::removeWhitelist("lemlib/motions/boomerang");
+ *   logger::removeWhitelist("lemlib/motions/follow");
+ * }
+ * @endcode
+ */
+void removeWhitelist(std::string s);
+
+/**
  * @brief add a topic to the blacklist
  *
  * Messages with a level other than debug will be sent to the sinks unless the
@@ -39,6 +57,24 @@ void addWhitelist(std::string s);
  * @endcode
  */
 void addBlacklist(std::string s);
+
+/**
+ * @brief remove a topic from the blacklist
+ *
+ * Messages with a level other than debug will be sent to the sinks unless the
+ * topic is on the blacklist
+ *
+ * @param s the topic to remove
+ *
+ * @b Example:
+ * @code {.cpp}
+ * void initialize() {
+ *   logger::removeWhitelist("lemlib/motions/boomerang");
+ *   logger::removeWhitelist("lemlib/motions/follow");
+ * }
+ * @endcode
+ */
+void removeBlacklist(std::string s);
 
 /**
  * @brief Level enum class

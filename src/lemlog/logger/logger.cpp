@@ -10,7 +10,11 @@ static std::list<std::string> blacklist;
 
 void addWhitelist(std::string s) { whitelist.push_back(s); }
 
+void removeWhitelist(std::string s) { whitelist.remove(s); }
+
 void addBlacklist(std::string s) { blacklist.push_back(s); }
+
+void removeBlacklist(std::string s) { blacklist.remove(s); }
 
 /**
  * @brief log a message with a level and topic
