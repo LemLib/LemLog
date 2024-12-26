@@ -61,11 +61,6 @@ static void log(Level level, std::string topic, std::string& format, Args&&... a
 Helper::Helper(std::string topic)
     : m_topic(topic) {}
 
-template <typename... Args>
-void Helper::log(Level level, const std::string& format, Args&&... args) {
-    logger::log(level, m_topic, format, args...);
-}
-
 Sink::Sink() { sinks.push_back(this); }
 
 Sink::~Sink() { sinks.remove(this); }

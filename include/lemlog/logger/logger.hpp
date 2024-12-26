@@ -126,7 +126,9 @@ class Helper {
          * @endcode
          */
         template <typename... Args>
-        void log(Level level, const std::string& format, Args&&... args);
+        void log(Level level, const std::string& format, Args&&... args) {
+            logger::log(level, m_topic, format, args...);
+        }
     private:
         const std::string m_topic;
 };
