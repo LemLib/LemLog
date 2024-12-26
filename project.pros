@@ -4,6 +4,26 @@
         "project_name": "LemLog-temp",
         "target": "v5",
         "templates": {
+            "fmtlib": {
+                "location": "/Users/quademaiello/Library/Application Support/PROS/templates/fmtlib@1.0.0",
+                "metadata": {
+                    "origin": "local"
+                },
+                "name": "fmtlib",
+                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
+                "supported_kernels": "^4.1.1",
+                "system_files": [
+                    "include/fmtlib/core.h",
+                    "include/fmtlib/format-inl.h",
+                    "firmware/fmtlib.a",
+                    "include/fmtlib/args.h",
+                    "include/fmtlib/format.h",
+                    "include/fmtlib/base.h"
+                ],
+                "target": "v5",
+                "user_files": [],
+                "version": "1.0.0"
+            },
             "kernel": {
                 "location": "C:\\Users\\Liam Teale\\AppData\\Roaming\\PROS\\templates\\kernel@4.1.1",
                 "metadata": {

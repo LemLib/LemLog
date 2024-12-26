@@ -1,5 +1,5 @@
 #include "lemlog/logger/logger.hpp"
-#include "fmt/core.h"
+#include "fmtlib/core.h"
 #include <list>
 
 namespace logger {
