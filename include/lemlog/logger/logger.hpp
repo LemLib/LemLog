@@ -112,7 +112,8 @@ class Helper {
          * @brief Send a message to all sinks
          *
          * @param level the logging level of the message
-         * @param message the message to send
+         * @param format the message to be sent
+         * @param args the arguments to be formatted into the message
          *
          * @b Example:
          * @code {.cpp}
@@ -120,11 +121,12 @@ class Helper {
          *   // create a Helper
          *   logger::Helper helper("doSomething");
          *   // log an info message
-         *   helper.log(logger::Level::INFO, "Did something!");
+         *   helper.log(logger::Level::INFO, "Motor temperature: {}", 42);
          * }
          * @endcode
          */
-        void log(Level level, std::string message);
+        template <typename... Args>
+        void log(Level level, const std::string& format, Args&&... args);
     private:
         const std::string m_topic;
 };

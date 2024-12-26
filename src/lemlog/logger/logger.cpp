@@ -1,4 +1,5 @@
 #include "lemlog/logger/logger.hpp"
+#include "fmt/core.h"
 #include <list>
 
 namespace logger {
@@ -24,9 +25,16 @@ void removeBlacklist(std::string s) { blacklist.remove(s); }
  *
  * @param level the level of the message, e.g INFO
  * @param topic the topic of the message, e.g "lemlib/motions/boomerang"
- * @param message the message to send, e.g "Hello World!"
+ * @param format the pre-formatted message, e.g. "Hello, {}!"
+ * @param args the arguments to be formatted into the message, e.g. "world"
+ * 
+ * @tparam Args the types of the arguments to be formatted into the message
  */
-static void log(Level level, std::string topic, std::string message) {
+template <typename... Args>
+static void log(Level level, std::string topic, std::string& format, Args&&... args) {
+    // format the message into a string using the provided arguments
+    std::string message = fmt::format(format, std::forward<Args>(args)...);
+
     // is the message a debug message?
     if (level == Level::DEBUG) {
         // is it whitelisted?
@@ -53,8 +61,9 @@ static void log(Level level, std::string topic, std::string message) {
 Helper::Helper(std::string topic)
     : m_topic(topic) {}
 
-void Helper::log(Level level, std::string message) {
-    logger::log(level, m_topic, message);
+template <typename... Args>
+void Helper::log(Level level, const std::string& format, Args&&... args) {
+    logger::log(level, m_topic, format, args...);
 }
 
 Sink::Sink() { sinks.push_back(this); }
