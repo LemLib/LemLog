@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fmtlib/core.h"
 #include <string>
 
 namespace logger {
@@ -88,6 +89,21 @@ enum class Level {
 };
 
 /**
+ * @brief log a message with a level and topic
+ *
+ * Messages with a logging level of DEBUG must have the topic whitelisted,
+ * while all other messages are sent by default unless the topic is blacklisted
+ *
+ * @param level the level of the message, e.g INFO
+ * @param topic the topic of the message, e.g "lemlib/motions/boomerang"
+ * @param format the pre-formatted message, e.g. "Hello, {}!"
+ * @param args the arguments to be formatted into the message, e.g. "world"
+ *
+ * @tparam Args the types of the arguments to be formatted into the message
+ */
+static void log(Level level, std::string topic, std::string message);
+
+/**
  * @brief Logger Helper class. Used to send messages to all sinks
  *
  */
@@ -108,6 +124,7 @@ class Helper {
          * @endcode
          */
         Helper(std::string topic);
+
         /**
          * @brief Send a message to all sinks
          *
@@ -127,7 +144,11 @@ class Helper {
          */
         template <typename... Args>
         void log(Level level, const std::string& format, Args&&... args) {
-            logger::log(level, m_topic, format, args...);
+            // format the message into a string using the provided arguments
+            std::string message =
+                fmt::format(format, std::forward<Args>(args)...);
+
+            logger::log(level, m_topic, message);
         }
     private:
         const std::string m_topic;

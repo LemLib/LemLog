@@ -17,24 +17,7 @@ void addBlacklist(std::string s) { blacklist.push_back(s); }
 
 void removeBlacklist(std::string s) { blacklist.remove(s); }
 
-/**
- * @brief log a message with a level and topic
- *
- * Messages with a logging level of DEBUG must have the topic whitelisted,
- * while all other messages are sent by default unless the topic is blacklisted
- *
- * @param level the level of the message, e.g INFO
- * @param topic the topic of the message, e.g "lemlib/motions/boomerang"
- * @param format the pre-formatted message, e.g. "Hello, {}!"
- * @param args the arguments to be formatted into the message, e.g. "world"
- * 
- * @tparam Args the types of the arguments to be formatted into the message
- */
-template <typename... Args>
-static void log(Level level, std::string topic, std::string& format, Args&&... args) {
-    // format the message into a string using the provided arguments
-    std::string message = fmt::format(format, std::forward<Args>(args)...);
-
+static void log(Level level, std::string topic, std::string message) {
     // is the message a debug message?
     if (level == Level::DEBUG) {
         // is it whitelisted?
