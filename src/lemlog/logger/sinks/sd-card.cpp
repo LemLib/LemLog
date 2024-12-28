@@ -3,7 +3,12 @@
 #include <fstream>
 
 namespace logger {
-SDCard::SDCard(std::string filename, bool logTimestamp) : filename("/usd/" + filename), logTimestamp(logTimestamp) {}
+SDCard::SDCard(std::string filename, bool logTimestamp, int cacheSize)
+    : filename("/usd/" + filename),
+      logTimestamp(logTimestamp),
+      cacheSize(cacheSize) {
+    this->cache = std::vector<std::string>();
+}
 
 std::string SDCard::formatTimestamp(long long ms) {
     // use the % operator to get the remainder of the division
@@ -25,8 +30,11 @@ void SDCard::send(Level level, std::string topic, std::string message) {
     // output: <time> [LEVEL] (topic) message
     std::string output = "";
 
-    if (this->logTimestamp) output += this->formatTimestamp((long long) pros::millis());
+    // if the timestamp is enabled, add it to the message
+    if (this->logTimestamp)
+        output += this->formatTimestamp((long long)pros::millis());
 
+    // add the level to the message
     switch (level) {
         case (Level::DEBUG): {
             output += " [DEBUG]";
@@ -48,8 +56,17 @@ void SDCard::send(Level level, std::string topic, std::string message) {
 
     output += " (" + topic + ") " + message + "\n";
 
-    std::ofstream file(this->filename);
-    file << output;
-    file.close();
+    // add the message to the cache
+    this->cache.push_back(output);
+
+    // if the cache is full, write it to the file
+    if (this->cache.size() >= this->cacheSize) {
+        std::ofstream file(this->filename, std::ios::app);
+        for (std::string& line : this->cache) {
+            file << line;
+        }
+        file.close();
+        this->cache.clear();
+    }
 }
-}
+} // namespace logger
