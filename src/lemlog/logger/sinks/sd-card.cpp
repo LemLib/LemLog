@@ -3,7 +3,9 @@
 #include <fstream>
 
 namespace logger {
-SDCard::SDCard(std::string filename, bool logTimestamp) : filename("/usd/" + filename), logTimestamp(logTimestamp) {}
+SDCard::SDCard(std::string filename, bool logTimestamp)
+    : filename("/usd/" + filename),
+      logTimestamp(logTimestamp) {}
 
 std::string SDCard::formatTimestamp(long long ms) {
     // use the % operator to get the remainder of the division
@@ -25,7 +27,8 @@ void SDCard::send(Level level, std::string topic, std::string message) {
     // output: <time> [LEVEL] (topic) message
     std::string output = "";
 
-    if (this->logTimestamp) output += this->formatTimestamp((long long) pros::millis());
+    if (this->logTimestamp)
+        output += this->formatTimestamp((long long)pros::millis());
 
     switch (level) {
         case (Level::DEBUG): {
@@ -52,4 +55,4 @@ void SDCard::send(Level level, std::string topic, std::string message) {
     file << output;
     file.close();
 }
-}
+} // namespace logger
