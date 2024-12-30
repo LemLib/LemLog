@@ -16,4 +16,4 @@ class SDCard : public Sink {
         std::string filename;
         bool logTimestamp;
 };
-}
+} // namespace logger
