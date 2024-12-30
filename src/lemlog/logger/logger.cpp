@@ -1,5 +1,4 @@
 #include "lemlog/logger/logger.hpp"
-#include "fmtlib/core.h"
 #include <list>
 
 namespace logger {
@@ -17,7 +16,7 @@ void addBlacklist(std::string s) { blacklist.push_back(s); }
 
 void removeBlacklist(std::string s) { blacklist.remove(s); }
 
-static void log(Level level, std::string topic, std::string message) {
+void log(Level level, std::string topic, std::string message) {
     // is the message a debug message?
     if (level == Level::DEBUG) {
         // is it whitelisted?

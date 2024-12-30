@@ -1,6 +1,6 @@
 #pragma once
 
-#include "fmtlib/core.h"
+#include <format>
 #include <string>
 
 namespace logger {
@@ -101,7 +101,7 @@ enum class Level {
  *
  * @tparam Args the types of the arguments to be formatted into the message
  */
-static void log(Level level, std::string topic, std::string message);
+void log(Level level, std::string topic, std::string message);
 
 /**
  * @brief Logger Helper class. Used to send messages to all sinks
@@ -143,11 +143,13 @@ class Helper {
          * @endcode
          */
         template <typename... Args>
-        void log(Level level, const std::string& format, Args&&... args) {
-            // format the message into a string using the provided arguments
-            std::string message =
-                fmt::vformat(format, std::forward<Args>(args)...);
+        void log(Level level, std::string_view format, Args&&... args) {
+            auto formatted_args = std::make_format_args(args...);
 
+            // Create the format_args object using std::forward
+            std::string message = std::vformat(format, formatted_args);
+
+            // Log the formatted message
             logger::log(level, m_topic, message);
         }
     private:
