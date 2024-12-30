@@ -146,7 +146,7 @@ class Helper {
         void log(Level level, const std::string& format, Args&&... args) {
             // format the message into a string using the provided arguments
             std::string message =
-                fmt::format(format, std::forward<Args>(args)...);
+                fmt::vformat(format, std::forward<Args>(args)...);
 
             logger::log(level, m_topic, message);
         }
