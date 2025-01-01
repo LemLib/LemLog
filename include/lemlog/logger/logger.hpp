@@ -128,8 +128,10 @@ class Helper {
         /**
          * @brief Send a message to all sinks
          *
+         * Sends a message to all sinks
+         *
          * @param level the logging level of the message
-         * @param format the message to be sent
+         * @param format the format of the message to be sent
          * @param args the arguments to be formatted into the message
          *
          * @b Example:

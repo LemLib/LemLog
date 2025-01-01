@@ -28,6 +28,7 @@ void initialize() {
     logger::Helper test("test-topic");
 
     test.log(logger::Level::INFO, "The value is {}", 42);
+    test.log(logger::Level::INFO, "hello!");
 }
 
 /**
