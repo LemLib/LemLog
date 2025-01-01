@@ -21,11 +21,13 @@ class List {
         void push_back(T value) {
             if (exists(value)) return;
             Node<T>* const last = getLast();
+            Node<T>* const newLast = new Node<T>(value);
             if (last == nullptr) {
-                m_first = new Node<T>(value);
+                m_first = newLast;
             } else {
-                last->next = new Node<T>(value);
+                last->next = newLast;
             }
+            newLast->prev = last;
         }
 
         Node<T>* getLast() {
@@ -86,10 +88,10 @@ template <typename T>
 class Node {
         friend List<T>;
     public:
-        Node<T>(T value)
+        Node(T value)
             : value(value) {}
     private:
-        ~Node<T>() {
+        ~Node() {
             if (prev != nullptr) prev->next = this->next;
         }
 
