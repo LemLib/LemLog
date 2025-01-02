@@ -52,14 +52,16 @@ class Helper {
          * }
          * @endcode
          */
+
         template <typename... Args>
         void log(Level level, std::string_view format, Args&&... args) const {
-            // Create the formatted message directly using std::vformat
-            std::string message = std::vformat(
-                format, std::make_format_args(std::forward<Args>(args)...));
+            const auto& formatted_args = std::make_format_args(args...);
+
+            // Create the format_args object using std::forward
+            const std::string& message = std::vformat(format, formatted_args);
 
             // Log the formatted message
-            log(level, m_topic, message);
+            logger::log(level, m_topic, message);
         }
     private:
         const std::string m_topic;
