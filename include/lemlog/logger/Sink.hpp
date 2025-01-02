@@ -125,7 +125,8 @@ class Sink {
          * This function is called by the logger. It filters messages before
          * calling the write member function. This is to simplify the
          * implementation of custom sinks as well as enforce the use of the
-         * allowlist and blockedlist
+         * allowlist and blockedlist. It also enforces the use of minimum
+         * logging levels
          *
          * @param level the logging level of the message
          * @param topic the topic of the message, e.g
@@ -137,7 +138,7 @@ class Sink {
         SinkStatus send(Level level, const std::string& topic,
                         const std::string& message);
         const std::string m_name;
-        Level m_minLevel;
+        Level m_minLevel = Level::INFO;
         std::list<std::string> m_allowList;
         std::list<std::string> m_blockedList;
 };

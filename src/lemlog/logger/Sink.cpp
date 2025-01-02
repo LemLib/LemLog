@@ -150,6 +150,11 @@ SinkStatus Sink::send(Level level, const std::string& topic,
         return SinkStatus::OK;
     }
 
+    // Check if the level is >= the minimum logging level
+    if (static_cast<int>(level) >= static_cast<int>(m_minLevel)) {
+        return SinkStatus::OK;
+    }
+
     // Default case: write the message
     return this->write(level, topic, message);
 }
