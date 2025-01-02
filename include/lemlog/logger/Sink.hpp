@@ -12,6 +12,16 @@ enum class Level {
     ERROR,
 };
 
+/**
+ * @brief send a message to all sinks
+ *
+ * @param level the logging level of the message
+ * @param topic the topic of the message, e.g
+ *                  "lemlib/motions/move-to-point"
+ * @param message the message to be sent
+ */
+void log(Level level, const std::string& topic, const std::string& message);
+
 enum class SinkStatus {
     OK, /** sink write OK, no action necessary */
     WARNING, /** sink write warning, message to all other sinks */
@@ -103,10 +113,27 @@ class Sink {
          * @param topic the topic of the message, e.g
          *                  "lemlib/motions/move-to-point"
          * @param message the message to be sent
+         *
+         * @return SinkStatus the status of the sink. OK, WARNING, or ERROR
          */
         virtual SinkStatus write(Level level, const std::string& topic,
                                  const std::string& message) = 0;
     private:
+        /**
+         * @brief send a message to the sink
+         *
+         * This function is called by the logger. It filters messages before
+         * calling the write member function. This is to simplify the
+         * implementation of custom sinks as well as enforce the use of the
+         * allowlist and blockedlist
+         *
+         * @param level the logging level of the message
+         * @param topic the topic of the message, e.g
+         *                  "lemlib/motions/move-to-point"
+         * @param message the message to be sent
+         *
+         * @return SinkStatus the status of the sink. OK, WARNING, or ERROR
+         */
         SinkStatus send(Level level, const std::string& topic,
                         const std::string& message);
         const std::string m_name;

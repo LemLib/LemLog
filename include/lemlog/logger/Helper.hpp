@@ -32,7 +32,9 @@ class Helper {
         /**
          * @brief Send a message to all sinks
          *
-         * Sends a message to all sinks
+         * This function uses std::format to make formatted messages.
+         * See https://github.com/paulkazusek/std_format_cheatsheet,
+         * an std::format cheat sheet
          *
          * @param level the logging level of the message
          * @param format the format of the message to be sent
@@ -45,29 +47,21 @@ class Helper {
          *   logger::Helper helper("doSomething");
          *   // log an info message
          *   helper.log(logger::Level::INFO, "Motor temperature: {}", 42);
+         *   // log a fake error message
+         *   helper.log(logger::Level::ERROR, "fake error message");
          * }
          * @endcode
          */
         template <typename... Args>
         void log(Level level, std::string_view format, Args&&... args) const {
-            const auto& formatted_args = std::make_format_args(args...);
-
-            // Create the format_args object using std::forward
-            const std::string& message = std::vformat(format, formatted_args);
+            // Create the formatted message directly using std::vformat
+            std::string message = std::vformat(
+                format, std::make_format_args(std::forward<Args>(args)...));
 
             // Log the formatted message
-            write(level, m_topic, message);
+            log(level, m_topic, message);
         }
     private:
-        /**
-         * @brief
-         *
-         * @param level
-         * @param topic
-         * @param message
-         */
-        void write(Level level, const std::string& topic,
-                   const std::string& message) const;
         const std::string m_topic;
 };
 } // namespace logger
