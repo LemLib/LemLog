@@ -1,4 +1,5 @@
-#include "lemlog/logger/logger.hpp"
+#include "lemlog/logger/Sink.hpp"
+#include <algorithm>
 
 namespace logger {
 
@@ -102,45 +103,56 @@ class Node {
 
 // doubly linked list of all sinks
 static constinit List<Sink*> sinks;
-static constinit List<std::string> whitelist;
-static constinit List<std::string> blacklist;
 
-void addWhitelist(std::string s) { whitelist.push_back(s); }
-
-void removeWhitelist(std::string s) { whitelist.erase(s); }
-
-void addBlacklist(std::string s) { blacklist.push_back(s); }
-
-void removeBlacklist(std::string s) { blacklist.erase(s); }
-
-void log(Level level, std::string topic, std::string message) {
-    // is the message a debug message?
-    if (level == Level::DEBUG) {
-        // is it whitelisted?
-        bool found = false;
-        for (const std::string& s : whitelist) {
-            if (topic == s) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) return;
-    } else {
-        // is the message blacklisted?
-        for (const std::string& s : blacklist) {
-            if (topic == s) return;
-        }
-    }
+void log(Level level, const std::string& topic, const std::string& message) {
     // send the message to all sinks
     for (Sink* const sink : sinks) {
         sink->send(level, topic, message);
     }
 }
 
-Helper::Helper(std::string topic)
-    : m_topic(topic) {}
+Sink::Sink(std::string name)
+    : m_name(name) {
+    sinks.push_back(this);
+}
 
-Sink::Sink() { sinks.push_back(this); }
+void Sink::addToAllowList(const std::string& topic) {
+    m_allowList.emplace_back(topic);
+}
+
+void Sink::removeFromAllowList(const std::string& topic) {
+    m_allowList.remove(topic);
+}
+
+void Sink::addToBlockedList(const std::string& topic) {
+    m_blockedList.emplace_front(topic);
+}
+
+void Sink::removeFromBlockedList(const std::string& topic) {
+    m_blockedList.remove(topic);
+}
+
+void Sink::setLoggingLevel(Level level) { m_minLevel = level; }
+
+const std::string& Sink::getName() const& { return m_name; }
+
+SinkStatus Sink::send(Level level, const std::string& topic,
+                      const std::string& message) {
+    // Check if the topic is on the allowlist
+    if (std::find(m_allowList.begin(), m_allowList.end(), topic) !=
+        m_allowList.end()) {
+        return this->write(level, topic, message);
+    }
+
+    // Check if the topic is on the blocked list
+    if (std::find(m_blockedList.begin(), m_blockedList.end(), topic) !=
+        m_blockedList.end()) {
+        return SinkStatus::OK;
+    }
+
+    // Default case: write the message
+    return this->write(level, topic, message);
+}
 
 Sink::~Sink() { sinks.erase(this); }
 } // namespace logger

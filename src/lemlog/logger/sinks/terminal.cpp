@@ -7,7 +7,8 @@
 // ERROR - RED
 
 namespace logger {
-Terminal::Terminal(bool disableCOBS, bool disableStreamID) {
+Terminal::Terminal(bool disableCOBS, bool disableStreamID)
+    : Sink("terminal") {
     if (disableCOBS) { pros::c::serctl(SERCTL_DISABLE_COBS, NULL); }
     if (disableStreamID) {
         // 0x74756f73 is the stream identifier ("sout")
@@ -15,7 +16,8 @@ Terminal::Terminal(bool disableCOBS, bool disableStreamID) {
     }
 }
 
-void Terminal::send(Level level, std::string topic, std::string message) {
+SinkStatus Terminal::write(Level level, const std::string& topic,
+                           const std::string& message) {
     // output: <reset> <color> [LEVEL] <gray> (topic) <reset> message
     std::string output = "\u001b[0m"; // reset code
     // logging level
@@ -37,11 +39,10 @@ void Terminal::send(Level level, std::string topic, std::string message) {
             break;
         }
     }
-    // topic
-    output += " \u001b[38;5;8m (" + topic + ")\u001b[0m";
     // message
-    output += message += "\n";
+    output += " \u001b[38;5;8m (" + topic + ")\u001b[0m" + message + "\n";
     // print
     std::cout << output << std::flush;
+    return SinkStatus::OK;
 }
 } // namespace logger

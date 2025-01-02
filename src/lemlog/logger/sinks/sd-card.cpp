@@ -4,7 +4,8 @@
 
 namespace logger {
 SDCard::SDCard(std::string filename, bool logTimestamp)
-    : filename("/usd/" + filename),
+    : Sink(filename),
+      filename("/usd/" + filename),
       logTimestamp(logTimestamp) {}
 
 std::string SDCard::formatTimestamp(long long ms) {
@@ -23,7 +24,8 @@ std::string SDCard::formatTimestamp(long long ms) {
     return output;
 }
 
-void SDCard::send(Level level, std::string topic, std::string message) {
+SinkStatus SDCard::write(Level level, const std::string& topic,
+                         const std::string& message) {
     // output: <time> [LEVEL] (topic) message
     std::string output = "";
 
@@ -54,5 +56,7 @@ void SDCard::send(Level level, std::string topic, std::string message) {
     std::ofstream file(this->filename);
     file << output;
     file.close();
+
+    return SinkStatus::OK;
 }
 } // namespace logger
