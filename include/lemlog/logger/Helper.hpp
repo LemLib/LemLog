@@ -63,6 +63,26 @@ class Helper {
             // Log the formatted message
             logger::log(level, m_topic, message);
         }
+
+        template <typename... Args>
+        void debug(std::string_view format, Args&&... args) const {
+            log(Level::DEBUG, format, std::forward<Args>(args)...);
+        }
+
+        template <typename... Args>
+        void info(std::string_view format, Args&&... args) const {
+            log(Level::INFO, format, std::forward<Args>(args)...);
+        }
+
+        template <typename... Args>
+        void warn(std::string_view format, Args&&... args) const {
+            log(Level::WARN, format, std::forward<Args>(args)...);
+        }
+
+        template <typename... Args>
+        void error(std::string_view format, Args&&... args) const {
+            log(Level::ERROR, format, std::forward<Args>(args)...);
+        }
     private:
         const std::string m_topic;
 };
