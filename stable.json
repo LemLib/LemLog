@@ -1,6 +1,16 @@
 [
   {
     "metadata": {
+      "location": "https://github.com/LemLib/LemLog/releases/download/v0.2.2/lemlog%400.2.2.zip"
+    },
+    "name": "lemlog",
+    "py/object": "pros.conductor.templates.base_template.BaseTemplate",
+    "supported_kernels": "^4.1.1",
+    "target": "v5",
+    "version": "0.2.2"
+  },
+  {
+    "metadata": {
       "location": "https://github.com/LemLib/LemLog/releases/download/v0.2.0/LemLog%400.2.0.zip"
     },
     "name": "LemLog",
