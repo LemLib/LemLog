@@ -23,24 +23,24 @@ SinkStatus Terminal::write(Level level, const std::string& topic,
     // logging level
     switch (level) {
         case (Level::DEBUG): {
-            output += "\u001b[32[DEBUG]";
+            output += "\u001b[32m[DEBUG]";
             break;
         }
         case (Level::INFO): {
-            output += "\u001b[36[INFO]";
+            output += "\u001b[36m[INFO]";
             break;
         }
         case (Level::WARN): {
-            output += "\u001b[33[WARN]";
+            output += "\u001b[33m[WARN]";
             break;
         }
         case (Level::ERROR): {
-            output += "\u001b[31[ERROR]";
+            output += "\u001b[31m[ERROR]";
             break;
         }
     }
     // message
-    output += " \u001b[38;5;8m (" + topic + ")\u001b[0m" + message + "\n";
+    output += "\u001b[38;5;8m (" + topic + ")\u001b[0m " + message + "\n";
     // print
     std::cout << output << std::flush;
     return SinkStatus::OK;

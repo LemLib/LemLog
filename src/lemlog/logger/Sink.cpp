@@ -77,10 +77,6 @@ class List {
             }
             return s;
         }
-
-        const T* begin() const { return &m_first->value; }
-
-        const T* end() const { return &(*this)[size()]; }
     private:
         Node<T>* m_first = nullptr;
 };
@@ -106,8 +102,8 @@ static constinit List<Sink*> sinks;
 
 void log(Level level, const std::string& topic, const std::string& message) {
     // send the message to all sinks
-    for (Sink* const sink : sinks) {
-        sink->send(level, topic, message);
+    for (int i = 0; i < sinks.size(); ++i) {
+        sinks[i]->send(level, topic, message);
     }
 }
 
@@ -151,7 +147,7 @@ SinkStatus Sink::send(Level level, const std::string& topic,
     }
 
     // Check if the level is >= the minimum logging level
-    if (static_cast<int>(level) >= static_cast<int>(m_minLevel)) {
+    if (static_cast<int>(level) < static_cast<int>(m_minLevel)) {
         return SinkStatus::OK;
     }
 
